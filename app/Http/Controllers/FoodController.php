@@ -14,17 +14,16 @@ class FoodController extends Controller
         return DB::table('food')->get();
     }
 
-    public function postFood(Request $request){
 
-        return $request->all();
-    $name = $request->get("food");
+	public function postFood(Request $request){
 
-         DB::table('food')->insert([
-             "name"=> $name
-         ]);
+		$name = $request->get('name');
+		
+		DB::table('food')->insert([
+			"name" => $name
+		]);
+		
+		return "success";
+	}
 
-        return "success";
-    }
-
-    //tetsiranje
 }

@@ -34,6 +34,14 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['middleware' => ['api']], function () {
     Route::post('register', 'Auth\AuthController@postRegisterUser');
     Route::post('login', 'Auth\AuthController@login');
-    Route::get('food', 'FoodController@getAllFood');
-    Route::post('food', 'FoodController@postFood');
+
+    Route::get('getFood', 'FoodController@getAllFood');
+    Route::post('postFood', 'FoodController@postFood');
+
+    Route::get('getMenu', 'FoodController@getAllMenu');
+    Route::post('postMenu', 'FoodController@postMenu');
+
+    Route::get('getReview', 'FoodController@getAllReview');
+    Route::post('postReview', 'FoodController@postReview');
+	
 });
