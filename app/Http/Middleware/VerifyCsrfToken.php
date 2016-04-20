@@ -13,14 +13,18 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-		    'getFood',
-			'postFood',
+        'getFood',
+        'postFood',
 
-            'getReview',
-            'postReview',
+        'getReview',
+        'postReview',
 
-            'getMenu',
-            'postMenu',
+        'getMenu',
+        'postMenu',
+
+        'register',
+        'login',
+        'getLogin',
 
     ];
 }

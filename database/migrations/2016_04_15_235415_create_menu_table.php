@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFoodOffersTable extends Migration
+class CreateMenuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,24 @@ class CreateFoodOffersTable extends Migration
      */
     public function up()
     {
-        Schema::create('food_offers', function (Blueprint $table) {
+
+        Schema::create('menu', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('food_id')->unsigned()->index();
             $table->foreign('food_id')->references('id')->on('food')->onDelete('cascade');
+
+            $table->integer('user_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->decimal('rate_total', 6, 2);
             $table->decimal('price', 6, 2);
             $table->enum('currency', ['HRK', 'EUR', 'USD']);
             $table->text('description');
+            $table->string('food_image');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -30,6 +39,6 @@ class CreateFoodOffersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('food_offers');
+        Schema::drop('menu');
     }
 }
