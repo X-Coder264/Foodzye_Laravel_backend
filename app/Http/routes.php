@@ -38,6 +38,8 @@ Route::group(['middleware' => ['api']], function () {
     Route::get('getFood', 'FoodController@getAllFood');
     Route::post('postFood', 'FoodController@postFood');
 
+    Route::post('food_image', 'FoodController@postImage');
+
     Route::get('getMenu', 'MenuController@getAllMenu');
     Route::post('postMenu', 'MenuController@postMenu');
 

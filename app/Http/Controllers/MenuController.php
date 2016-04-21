@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Menu;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 
@@ -14,7 +16,7 @@ class MenuController extends Controller
 
         //$menu = DB::table('menu')->get();
 
-        $menu=DB::table('menu')
+        $menu = DB::table('menu')
             ->join('food', 'food.id', '=', 'menu.food_id')
             ->select('menu.*', 'food.name')
             ->get();
@@ -26,16 +28,46 @@ class MenuController extends Controller
 
     public function postMenu(Request $request){
 
+        $user_id = $request->get('user_id');
+        $slug = $request->get('user_slug');
+        $food_id = $request->get('food_id');
         $price = $request->get('price');
         $currency = $request->get('currency');
         $description = $request->get('description');
 
-        DB::table('food')->insert([
-            "price" => $price,
-            "currency" => $currency,
-            "description" => $description
-        ]);
+        $encoded_string = $request->get('encoded_string');
 
-        return "success";
+        $image_name = $request->get('image_name');
+
+
+        $decoded_string = base64_decode($encoded_string);
+
+        $destinationPath = public_path() . '/users/'. $slug.'/food/'.$image_name;
+        $destinationPath2 = 'users/'. $slug.'/food/'.$image_name;
+
+        header('Content-Type: bitmap; charset=utf-8');
+
+        $file = fopen($destinationPath, 'wb');
+
+        $is_written = fwrite($file, $decoded_string);
+
+        fclose($file);
+
+        if($is_written > 0) {
+
+            DB::table('menu')->insert([
+                "user_id" => $user_id,
+                "food_id" => $food_id,
+                "price" => $price,
+                "currency" => $currency,
+                "description" => $description,
+                "food_image" => $destinationPath2,
+                "created_at" => Carbon::now()
+            ]);
+
+            return "success";
+        }else{
+            return "failed";
+        }
     }
 }

@@ -99,10 +99,10 @@ class AuthController extends Controller
         //Auth::login($this->create(Request::json()->all()));
 
         //return response()->json(['message' => 'Registration succesfully completed!']);
-
         $this->create($request->all());
+        return json_encode(DB::table('users')->where('email', $request->get('email'))->get());
 
-        return "success";
+        //return "success";
     }
 
     public function login(Request $request)
