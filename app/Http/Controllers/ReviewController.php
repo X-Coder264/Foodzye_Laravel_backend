@@ -34,7 +34,7 @@ class ReviewController extends Controller
                 "menu_id" => $menu_id,
                 "user_id" => $user_id
             ]);
-            return var_dump($user_id);
+            
             //TODO: this should definetly be done in database
             $menuRating = DB::table('menu')->select('rate_total', 'number_of_votes')->where('id', $menu_id)->get();
 
