@@ -22,7 +22,7 @@ class CreateReviewTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
 
-            $table->integer('rate');
+            $table->decimal('rate',6,2);
             $table->text('comment');
             $table->timestamps();
         });

@@ -22,7 +22,8 @@ class CreateMenuTable extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->decimal('rate_total', 6, 2);
+            $table->decimal('rate_total')->unsigned();
+            $table->integer('number_of_votes', 6, 2);
             $table->decimal('price', 6, 2);
             $table->enum('currency', ['HRK', 'EUR', 'USD']);
             $table->text('description');
