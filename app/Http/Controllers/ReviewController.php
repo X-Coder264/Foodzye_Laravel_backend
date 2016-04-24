@@ -68,4 +68,8 @@ class ReviewController extends Controller
         }
         return "success";
     }
+
+    public function postPlaceReview (Request $request){
+
+    }
 }

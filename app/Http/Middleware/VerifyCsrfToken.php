@@ -27,5 +27,8 @@ class VerifyCsrfToken extends BaseVerifier
         'login',
         'getLogin',
 
+        'getPlace',
+
+
     ];
 }
