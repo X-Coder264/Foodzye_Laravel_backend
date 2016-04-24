@@ -9,9 +9,21 @@ use DB;
 
 class ReviewController extends Controller
 {
-    public function getAllReview()
+    public function getAllReview($menu_id)
     {
-        return DB::table('review')->get();
+        $review = DB::table('review')
+            ->join('users', 'users.id', '=', 'review.user_id')
+            ->select('review.menu_id', 'review.rate', 'review.comment','users.name', 'users.user_picture')
+            ->where('menu_id',$menu_id)
+            ->where('review.comment', '<>', '')
+            ->get();
+
+        return $review;
+    }
+
+    public function getUsersReview ($menu_id, $user_id)
+    {
+        return DB::table('review')->select('rate', 'comment')->where('user_id', $user_id)->where('menu_id', $menu_id)->get();
     }
 
 
@@ -34,7 +46,7 @@ class ReviewController extends Controller
                 "menu_id" => $menu_id,
                 "user_id" => $user_id
             ]);
-            
+
             //TODO: this should definetly be done in database
             $menuRating = DB::table('menu')->select('rate_total', 'number_of_votes')->where('id', $menu_id)->get();
 
