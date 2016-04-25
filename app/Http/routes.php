@@ -50,6 +50,8 @@ Route::group(['middleware' => ['api']], function () {
     Route::post('postPlaceReview', 'ReviewController@postPlaceReview');
     Route::get('getPlaceReview/{id1}/{id2}', 'ReviewController@getPlaceReview');
 
+    Route::get('getUser/{id}', 'PlaceController@getUser');
+    Route::post('postUserUpdate', 'PlaceController@postUserUpdate');
     Route::get('getPlace', 'PlaceController@getAllPlace');
 	
 });
