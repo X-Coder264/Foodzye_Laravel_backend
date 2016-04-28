@@ -28,6 +28,7 @@ class CreateMenuTable extends Migration
             $table->enum('currency', ['HRK', 'EUR', 'USD']);
             $table->text('description');
             $table->string('food_image');
+            $table->string('name');
             $table->timestamps();
         });
 

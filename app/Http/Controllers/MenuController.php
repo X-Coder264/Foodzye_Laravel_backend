@@ -15,6 +15,7 @@ class MenuController extends Controller
 
         $menu = DB::table('menu')
             ->join('food', 'food.id', '=', 'menu.food_id')
+            ->select('menu.*', 'food.name as foodName')
             ->select('menu.*', 'food.name AS foodName')
             ->get();
 
