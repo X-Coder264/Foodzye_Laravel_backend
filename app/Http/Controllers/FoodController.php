@@ -36,7 +36,8 @@ class FoodController extends Controller
 		//$image_name = "bla.jpg";
 		
 		$decoded_string = base64_decode($encoded_string);
-		
+
+
 		$destinationPath = public_path() . '/users/'. $slug.'/food/'.$image_name;
 		
 		header('Content-Type: bitmap; charset=utf-8');
@@ -52,24 +53,6 @@ class FoodController extends Controller
 		}else{
 			return "failed";
 		}
-		
-		/*$path = base_path('users/antonio/');
-        $base = $image;
-        $binary = base64_decode($base);
-        header('Content-Type: bitmap; charset=utf-8');
-
-        $f = finfo_open();
-        $mime_type = finfo_buffer($f, $binary, FILEINFO_MIME_TYPE);
-        $mime_type = str_ireplace('image/', '', $mime_type);
-
-        $filename = md5(\Carbon\Carbon::now()) . '.' . $mime_type;
-        $file = fopen($path . $filename, 'wb');
-        if (fwrite($file, $binary)) {
-            return "success";
-        } else {
-            return "fail";
-        }
-        fclose($file);*/
 		
 	}
 

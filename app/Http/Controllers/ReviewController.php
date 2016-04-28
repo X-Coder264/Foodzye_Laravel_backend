@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Carbon\Carbon;
 use DB;
 
 class ReviewController extends Controller
@@ -20,11 +21,34 @@ class ReviewController extends Controller
 
         return $review;
     }
+	
+	public function getUserReviews($user_id)
+	{
+		return DB::table('review_user')->join('users', 'review_user.user_id', '=', 'users.id')->select('review_user.*', 'users.name', 'users.user_picture')->where('place_id', $user_id)->get();
+	}
 
     public function getUsersReview ($menu_id, $user_id)
     {
         return DB::table('review')->select('rate', 'comment')->where('user_id', $user_id)->where('menu_id', $menu_id)->get();
     }
+	
+	public function postFoodServiceReview(Request $request)
+	{
+		$place_id = $request->get('place_id');
+        $user_id = $request->get('user_id');
+        $rate = $request->get('rate');
+        $comment = $request->get('comment');
+		
+		DB::table('review_user')->insert([
+                "rate" => $rate,
+                "comment" => $comment,
+                "place_id" => $place_id,
+                "user_id" => $user_id,
+				"created_at" => Carbon::now()
+            ]);
+			
+		return "success";	
+	}
 
 
     public function postReview(Request $request)

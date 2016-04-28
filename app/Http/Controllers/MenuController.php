@@ -13,12 +13,22 @@ class MenuController extends Controller
 {
     public function getAllMenu(){
 
-
-        //$menu = DB::table('menu')->get();
-
         $menu = DB::table('menu')
             ->join('food', 'food.id', '=', 'menu.food_id')
-            ->select('menu.*', 'food.name')
+            ->select('menu.*', 'food.name AS foodName')
+            ->get();
+
+        return $menu;
+
+    }
+
+    public function getUserMenu($id){
+
+        $menu = DB::table('menu')
+            ->join('users', 'menu.user_id', '=', 'users.id')
+            ->join('food', 'food.id', '=', 'menu.food_id')
+            ->where('users.id', '=', $id)
+            ->select('menu.*', 'food.name AS foodName')
             ->get();
 
         return $menu;
