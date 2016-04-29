@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -52,7 +53,7 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|min:4',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
         ]);
@@ -82,36 +83,34 @@ class AuthController extends Controller
      */
     public function postRegisterUser(Request $request)
     {
-        //dd($request);
-        /*$validator = $this->validator($request->all());
+        $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
-        }*/
-
-        /*Auth::guard($this->getGuard())->login($this->create($request->all()));
-
-        return redirect($this->redirectPath());*/
-        //Auth::login($this->create($request->all()));
-
-        //Auth::login($this->create(Request::json()->all()));
-
-        //return response()->json(['message' => 'Registration succesfully completed!']);
+            return "fail";
+        }
         $this->create($request->all());
-        return json_encode(DB::table('users')->where('email', $request->get('email'))->get());
 
-        //return "success";
+        $user = DB::table('users')->where('email', $request->get('email'))->get();
+
+        $result = File::makeDirectory(public_path() . '/users/'. $user[0]->slug.'/food/', 0775, true);
+
+        if($result){
+            return $user;
+        }else{
+            DB::table('users')->where('email', $request->get('email'))->delete();
+            return "fail";
+        }
     }
 
     public function login(Request $request)
     {
+        $this->validateLogin($request);
 
-        $credentials = $this->getCredentials($request);
+        $email = $request->get('email');
+        $password = $request->get('password');
 
-        if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
-            return DB::table('users')->where('email', $request->get('email'))->get();
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            return DB::table('users')->where('email', $email)->get();
         }
 
         return "fail";
