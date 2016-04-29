@@ -42,6 +42,7 @@ class MenuController extends Controller
         $user_id = $request->get('user_id');
         $slug = $request->get('user_slug');
         $food_id = $request->get('food_id');
+        $name = $request->get('name');
         $price = $request->get('price');
         $currency = $request->get('currency');
         $description = $request->get('description');
@@ -69,6 +70,7 @@ class MenuController extends Controller
             DB::table('menu')->insert([
                 "user_id" => $user_id,
                 "food_id" => $food_id,
+                "name" => $name,
                 "price" => $price,
                 "currency" => $currency,
                 "description" => $description,

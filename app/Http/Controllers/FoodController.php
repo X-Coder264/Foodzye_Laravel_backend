@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 
@@ -20,7 +21,9 @@ class FoodController extends Controller
 		$name = $request->get('name');
 		
 		DB::table('food')->insert([
-			"name" => $name
+			"name" => $name,
+			"created_at" => Carbon::now(),
+            "updated_at" => Carbon::now()
 		]);
 		
 		return "success";

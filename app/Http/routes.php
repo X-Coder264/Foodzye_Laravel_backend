@@ -34,6 +34,7 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['middleware' => ['api']], function () {
     Route::post('register', 'Auth\AuthController@postRegisterUser');
     Route::post('login', 'Auth\AuthController@login');
+    Route::post('postResetPassword', 'Auth\PasswordController@postResetPassword');
 
     Route::get('getFood', 'FoodController@getAllFood');
     Route::post('postFood', 'FoodController@postFood');

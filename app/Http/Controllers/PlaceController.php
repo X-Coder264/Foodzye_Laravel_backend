@@ -40,6 +40,7 @@ class PlaceController extends Controller
                     ->where('id', $data['user_id'])
                     ->update([
                         "email" => $data['email'],
+                        "description" => $data['description'],
                         "location" => $data['location'],
                         "phone" => $data['phone'],
                         "work_time" => $data['work_time'],
@@ -54,6 +55,7 @@ class PlaceController extends Controller
                 ->where('id', $data['user_id'])
                 ->update([
                     "email" => $data['email'],
+                    "description" => $data['description'],
                     "location" => $data['location'],
                     "phone" => $data['phone'],
                     "work_time" => $data['work_time']
