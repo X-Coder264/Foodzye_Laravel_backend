@@ -39,49 +39,127 @@ class MenuController extends Controller
 
 
     public function postMenu(Request $request){
-
-        $user_id = $request->get('user_id');
+		
+		$user_id = $request->get('user_id');
         $slug = $request->get('user_slug');
         $food_id = $request->get('food_id');
         $name = $request->get('name');
         $price = $request->get('price');
         $currency = $request->get('currency');
         $description = $request->get('description');
+		$encoded_string = "";
+		$image_name = "";
+		
+		if($request->has('encoded_string')){
+			$encoded_string = $request->get('encoded_string');
+			$image_name = $request->get('image_name');
+			
+			
+			$decoded_string = base64_decode($encoded_string);
 
-        $encoded_string = $request->get('encoded_string');
+			$destinationPath = public_path() . '/users/'. $slug.'/food/'.$image_name;
+			$destinationPath2 = 'users/'. $slug.'/food/'.$image_name;
 
-        $image_name = $request->get('image_name');
+			header('Content-Type: bitmap; charset=utf-8');
 
+			$file = fopen($destinationPath, 'wb');
 
-        $decoded_string = base64_decode($encoded_string);
+			$is_written = fwrite($file, $decoded_string);
 
-        $destinationPath = public_path() . '/users/'. $slug.'/food/'.$image_name;
-        $destinationPath2 = 'users/'. $slug.'/food/'.$image_name;
+			fclose($file);
 
-        header('Content-Type: bitmap; charset=utf-8');
+			if($is_written > 0) {
 
-        $file = fopen($destinationPath, 'wb');
+				DB::table('menu')->insert([
+					"user_id" => $user_id,
+					"food_id" => $food_id,
+					"name" => $name,
+					"price" => $price,
+					"currency" => $currency,
+					"description" => $description,
+					"food_image" => $destinationPath2,
+					"created_at" => Carbon::now()
+				]);
 
-        $is_written = fwrite($file, $decoded_string);
-
-        fclose($file);
-
-        if($is_written > 0) {
-
-            DB::table('menu')->insert([
+				return "success";
+			}else{
+				return "failed";
+			}
+			
+		}else{
+			DB::table('menu')->insert([
                 "user_id" => $user_id,
                 "food_id" => $food_id,
                 "name" => $name,
                 "price" => $price,
                 "currency" => $currency,
                 "description" => $description,
-                "food_image" => $destinationPath2,
                 "created_at" => Carbon::now()
             ]);
 
             return "success";
-        }else{
-            return "failed";
-        }
+		}
+
     }
+	
+	
+	public function postEditMenu(Request $request){
+        $slug = $request->get('user_slug');
+        $menu_id = $request->get('menu_id');
+        $name = $request->get('name');
+        $price = $request->get('price');
+        $currency = $request->get('currency');
+        $description = $request->get('description');
+		$encoded_string = "";
+		$image_name = "";
+		
+		if($request->has('encoded_string')){
+			$encoded_string = $request->get('encoded_string');
+			$image_name = $request->get('image_name');
+			
+			
+			$decoded_string = base64_decode($encoded_string);
+
+			$destinationPath = public_path() . '/users/'. $slug.'/food/'.$image_name;
+			$destinationPath2 = 'users/'. $slug.'/food/'.$image_name;
+
+			header('Content-Type: bitmap; charset=utf-8');
+
+			$file = fopen($destinationPath, 'wb');
+
+			$is_written = fwrite($file, $decoded_string);
+
+			fclose($file);
+
+			if($is_written > 0) {
+
+				DB::table('menu')->where('id', $menu_id)
+					->update([
+						"name" => $name,
+						"price" => $price,
+						"currency" => $currency,
+						"description" => $description,
+						"food_image" => $destinationPath2,
+						"updated_at" => Carbon::now()
+					]);
+
+				return "success";
+			}else{
+				return "failed";
+			}
+			
+		}else{
+			DB::table('menu')->where('id', $menu_id)
+				->update([
+					"name" => $name,
+					"price" => $price,
+					"currency" => $currency,
+					"description" => $description,
+					"updated_at" => Carbon::now()
+				]);
+
+            return "success";
+		}
+	}
+	
 }
