@@ -21,6 +21,7 @@ class VerifyCsrfToken extends BaseVerifier
         'getReview',
         'postReview',
         'getUsersReview',
+        'getUsersReviewPlace',
         'postFoodServiceReview',
 
         'postPlaceReview',

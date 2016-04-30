@@ -14,7 +14,7 @@ class ReviewController extends Controller
     {
         $review = DB::table('review')
             ->join('users', 'users.id', '=', 'review.user_id')
-            ->select('review.menu_id', 'review.rate', 'review.comment','users.name', 'users.user_picture')
+            ->select('review.menu_id', 'review.rate', 'review.comment','users.name', 'users.user_picture', 'review.created_at', 'review.updated_at')
             ->where('menu_id',$menu_id)
             ->where('review.comment', '<>', '')
             ->get();
@@ -31,6 +31,11 @@ class ReviewController extends Controller
     {
         return DB::table('review')->select('rate', 'comment')->where('user_id', $user_id)->where('menu_id', $menu_id)->get();
     }
+
+    public function getUsersReviewPlace ($place_id, $user_id)
+    {
+        return DB::table('review_user')->select('rate', 'comment')->where('user_id', $user_id)->where('place_id', $place_id)->get();
+    }
 	
 	public function postFoodServiceReview(Request $request)
 	{
@@ -38,14 +43,35 @@ class ReviewController extends Controller
         $user_id = $request->get('user_id');
         $rate = $request->get('rate');
         $comment = $request->get('comment');
-		
-		DB::table('review_user')->insert([
+
+        $rating = DB::table('review_user')->select('*')->where('user_id', $user_id)->where('place_id', $place_id)->get();
+
+        if ($rating == NULL) {
+            DB::table('review_user')->insert([
                 "rate" => $rate,
                 "comment" => $comment,
                 "place_id" => $place_id,
                 "user_id" => $user_id,
-				"created_at" => Carbon::now()
+                "created_at" => Carbon::now()
             ]);
+
+            $userRating = DB::table('users')->select('rate_total', 'number_of_votes')->where('id', $place_id)->get();
+
+            $newRating = ($userRating[0]->rate_total * $userRating[0]->number_of_votes + $rate) / ($userRating[0]->number_of_votes + 1);
+            DB::table('users')->where('id', $place_id)->increment('number_of_votes');
+            DB::table('users')->where('id', $place_id)->update(array('rate_total' => $newRating));
+
+        } else{
+
+            DB::table('review_user')->where('place_id', $place_id)->where( 'user_id', $user_id)->update(array('rate' => $rate, 'comment' => $comment,  "updated_at" => Carbon::now()));
+
+            //TODO: this should definetly be done in database
+            $userRating = DB::table('users')->select('rate_total', 'number_of_votes')->where('id', $place_id)->get();
+            $newRating = ($userRating[0]->rate_total * $userRating[0]->number_of_votes + $rate - $rating[0]->rate) / ($userRating[0]->number_of_votes);
+
+
+            DB::table('users')->where('id', $place_id)->update(array('rate_total' => $newRating));
+        }
 			
 		return "success";	
 	}
