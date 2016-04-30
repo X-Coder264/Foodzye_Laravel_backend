@@ -16,17 +16,27 @@ class VerifyCsrfToken extends BaseVerifier
         'getFood',
         'postFood',
 
+        'food_image',
+
         'getReview',
         'postReview',
         'getUsersReview',
+        'postFoodServiceReview',
+
+        'postPlaceReview',
+        'getPlaceReview',
 
         'getMenu',
         'postMenu',
+        'getUserMenu',
 
         'register',
         'login',
+        'postResetPassword',
         'getLogin',
 
+        'getUser',
+        'postUserUpdate',
         'getPlace',
 
 

@@ -44,6 +44,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::get('getMenu', 'MenuController@getAllMenu');
     Route::get('getMenu/{id}', 'MenuController@getUserMenu');
     Route::post('postMenu', 'MenuController@postMenu');
+    Route::get('getMenu/{id}', 'MenuController@getUserMenu');
 
     Route::get('getReview/{id1}', 'ReviewController@getAllReview');
 	Route::post('postFoodServiceReview', 'ReviewController@postFoodServiceReview');

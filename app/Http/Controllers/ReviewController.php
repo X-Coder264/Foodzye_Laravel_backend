@@ -68,7 +68,8 @@ class ReviewController extends Controller
                 "rate" => $rate,
                 "comment" => $comment,
                 "menu_id" => $menu_id,
-                "user_id" => $user_id
+                "user_id" => $user_id,
+                "created_at" => Carbon::now()
             ]);
 
             //TODO: this should definetly be done in database
@@ -87,7 +88,7 @@ class ReviewController extends Controller
             $newRating = ($menuRating[0]->rate_total * $menuRating[0]->number_of_votes + $rate - $rating[0]->rate) / ($menuRating[0]->number_of_votes);
 
 
-            DB::table('menu')->where('id', $menu_id)->update(array('rate_total' => $newRating));
+            DB::table('menu')->where('id', $menu_id)->update(array('rate_total' => $newRating, 'updated_at' => Carbon::now()));
 
         }
         return "success";
