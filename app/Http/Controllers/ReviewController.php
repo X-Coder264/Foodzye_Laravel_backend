@@ -81,14 +81,14 @@ class ReviewController extends Controller
 
 
         } else {
-            DB::table('review')->where('menu_id', $menu_id)->where( 'user_id', $user_id)->update(array('rate' => $rate, 'comment' => $comment ));
+            DB::table('review')->where('menu_id', $menu_id)->where( 'user_id', $user_id)->update(array('rate' => $rate, 'comment' => $comment,  "updated_at" => Carbon::now()));
 
                 //TODO: this should definetly be done in database
             $menuRating = DB::table('menu')->select('rate_total', 'number_of_votes')->where('id', $menu_id)->get();
             $newRating = ($menuRating[0]->rate_total * $menuRating[0]->number_of_votes + $rate - $rating[0]->rate) / ($menuRating[0]->number_of_votes);
 
 
-            DB::table('menu')->where('id', $menu_id)->update(array('rate_total' => $newRating, 'updated_at' => Carbon::now()));
+            DB::table('menu')->where('id', $menu_id)->update(array('rate_total' => $newRating));
 
         }
         return "success";
