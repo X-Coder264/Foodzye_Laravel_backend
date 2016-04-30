@@ -68,7 +68,8 @@ class ReviewController extends Controller
                 "rate" => $rate,
                 "comment" => $comment,
                 "menu_id" => $menu_id,
-                "user_id" => $user_id
+                "user_id" => $user_id,
+				"created_at" => Carbon::now()
             ]);
 
             //TODO: this should definetly be done in database
@@ -80,7 +81,7 @@ class ReviewController extends Controller
 
 
         } else {
-            DB::table('review')->where('menu_id', $menu_id)->where( 'user_id', $user_id)->update(array('rate' => $rate, 'comment' => $comment ));
+            DB::table('review')->where('menu_id', $menu_id)->where( 'user_id', $user_id)->update(array('rate' => $rate, 'comment' => $comment,  "updated_at" => Carbon::now()));
 
                 //TODO: this should definetly be done in database
             $menuRating = DB::table('menu')->select('rate_total', 'number_of_votes')->where('id', $menu_id)->get();
