@@ -69,7 +69,7 @@ class ReviewController extends Controller
                 "comment" => $comment,
                 "menu_id" => $menu_id,
                 "user_id" => $user_id,
-				"created_at" => Carbon::now()
+                "created_at" => Carbon::now()
             ]);
 
             //TODO: this should definetly be done in database
