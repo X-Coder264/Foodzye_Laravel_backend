@@ -27,8 +27,7 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('login', 'Auth\AuthController@getLogin');
-    //Route::get('register', 'Auth\AuthController@showRegistrationForm');
+    //
 });
 
 Route::group(['middleware' => ['api']], function () {
@@ -60,5 +59,8 @@ Route::group(['middleware' => ['api']], function () {
     Route::get('getUser/{id}', 'PlaceController@getUser');
     Route::post('postUserUpdate', 'PlaceController@postUserUpdate');
     Route::get('getPlace', 'PlaceController@getAllPlace');
+
+    Route::get('getPremiumTypes', 'PayPalController@getPremiumTypes');
+    Route::post('postPayment', 'PayPalController@postPayment');
 	
 });

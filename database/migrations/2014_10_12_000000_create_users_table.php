@@ -25,7 +25,9 @@ class CreateUsersTable extends Migration
             $table->string('work_time');
             $table->string('user_picture');
             $table->decimal('rate_total',6,2);
-            $table->integer('number_of_votes', 6, 2);
+            $table->integer('number_of_votes');
+            $table->tinyInteger('premium');
+            $table->string('premium_until');
             $table->rememberToken();
             $table->timestamps();
         });

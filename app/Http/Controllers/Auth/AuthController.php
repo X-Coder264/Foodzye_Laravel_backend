@@ -83,11 +83,11 @@ class AuthController extends Controller
      */
     public function postRegisterUser(Request $request)
     {
-        $validator = $this->validator($request->all());
+        /*$validator = $this->validator($request->all());
 
         if ($validator->fails()) {
             return "fail";
-        }
+        }*/
         $this->create($request->all());
 
         $user = DB::table('users')->where('email', $request->get('email'))->get();

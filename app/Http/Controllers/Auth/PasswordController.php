@@ -38,21 +38,17 @@ class PasswordController extends Controller
     public function postResetPassword(Request $request){
         $email = $request->get("email");
 		
-		
-		//random generated 8 chars long password
+        //random generated 8 chars long password
 		$bytes = openssl_random_pseudo_bytes(4);
 
 		$pwd = bin2hex($bytes);
 		
         $user = User::where('email', $email)->get();
-		//return $pwd;
 		
 		//shuffle the random generated password 4fun :)
         $shuffled_random_password = str_shuffle($pwd);
 		
         $hashed_shuffled_random_password = Hash::make($shuffled_random_password);
-		
-		//return $hashed_shuffled_random_password;
 
         DB::table('users')
             ->where('email', $email)
